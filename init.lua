@@ -106,6 +106,15 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+vim.api.nvim_create_autocmd('BufWritePost', {
+  desc = 'if C file changed, rebuild the cscope',
+  group = vim.api.nvim_create_augroup('CscopeBuild', { clear = true }),
+  pattern = { '*.c', '*.h' },
+  callback = function()
+    vim.cmd 'Cscope db build'
+  end,
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -313,6 +322,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'cscope')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -349,6 +359,22 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+    end,
+  },
+  {
+    'dhananjaylatkar/cscope_maps.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('cscope_maps').setup {
+        disable_maps = false,
+        cscope = {
+          picker = 'telescope',
+          db_build_cmd_args = { '-Rbqkv' },
+          skip_input_prompt = true,
+        },
+      }
     end,
   },
 
@@ -530,9 +556,27 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        clangd = {
+          cmd = {
+            'clangd',
+            '--background-index',
+            '--clang-tidy',
+            '-j',
+            '8',
+            '--malloc-trim',
+            '--pch-storage=memory',
+          },
+        },
+        gopls = {
+          settings = {
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+            gofumpt = true,
+          },
+        },
+        --pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
