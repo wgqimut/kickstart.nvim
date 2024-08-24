@@ -105,15 +105,14 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
-vim.api.nvim_create_autocmd('BufWritePost', {
-  desc = 'if C file changed, rebuild the cscope',
-  group = vim.api.nvim_create_augroup('CscopeBuild', { clear = true }),
-  pattern = { '*.c', '*.h' },
-  callback = function()
-    vim.cmd 'Cscope db build'
-  end,
-})
+--vim.api.nvim_create_autocmd('BufWritePost', {
+--  desc = 'if C file changed, rebuild the cscope',
+--  group = vim.api.nvim_create_augroup('CscopeBuild', { clear = true }),
+--  pattern = { '*.c', '*.h' },
+--  callback = function()
+--    vim.cmd 'Cscope db build'
+--  end,
+-- })
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -394,6 +393,34 @@ require('lazy').setup({
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
+  {
+    'sindrets/diffview.nvim',
+    config = true,
+    keys = {
+      vim.keymap.set('n', '<leader>gb', '<Cmd>.DiffviewFileHistory --follow<CR>', { desc = 'File history for the current line' }),
+      vim.keymap.set('v', '<leader>gb', "<Esc><Cmd>'<,'>DiffviewFileHistory --follow<CR>", { desc = 'File history for the visual selection' }),
+    },
+  },
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      'nvim-telescope/telescope.nvim', -- optional
+      'ibhagwan/fzf-lua', -- optional
+    },
+    config = function()
+      require('neogit').setup {
+        intergrations = {
+          diffview = true,
+          telescope = true,
+        },
+      }
+    end,
+  },
+
   -- {
   --   'dhananjaylatkar/cscope_maps.nvim',
   --   dependencies = {
@@ -951,8 +978,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
