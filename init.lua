@@ -629,6 +629,7 @@ require('lazy').setup({
             '--completion-style=detailed',
             '--function-arg-placeholders',
             '--fallback-style=llvm',
+            '--offset-encoding=utf-16',
           },
           root_dir = function(fname)
             return require('lspconfig.util').root_pattern(
@@ -644,9 +645,6 @@ require('lazy').setup({
             )
           end,
 
-          keys = {
-            { '<leader>ch', '<cmd>ClangdSwitchSourceHeader<cr>', desc = 'Switch Source/Header (C/C++)' },
-          },
           init_options = {
             usePlaceholders = true,
             completeUnimported = true,
