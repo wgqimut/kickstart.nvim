@@ -409,7 +409,6 @@ require('lazy').setup({
 
       -- Only one of these is needed, not both.
       'nvim-telescope/telescope.nvim', -- optional
-      'ibhagwan/fzf-lua', -- optional
     },
     config = function()
       require('neogit').setup {
@@ -418,6 +417,7 @@ require('lazy').setup({
           telescope = true,
         },
       }
+      vim.keymap.set({ 'n', 'v' }, '<leader>gs', '<Cmd>Neogit<CR>', { desc = 'show git status' })
     end,
   },
 
@@ -765,7 +765,22 @@ require('lazy').setup({
       },
     },
   },
-
+  {
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
+    end,
+    dependencies = {
+      'zbirenbaum/copilot.lua',
+      cmd = 'Copilot',
+      config = function()
+        require('copilot').setup {
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+        }
+      end,
+    },
+  },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -815,6 +830,13 @@ require('lazy').setup({
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
+        --formatting = {
+        --format = .cmp_format {
+        --  mode = 'symbol',
+        --  max_width = 50,
+        -- symbol_map = { Copilot = '' },
+        --},
+        --},
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -877,6 +899,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'copilot', group_index = 2 },
         },
       }
     end,
