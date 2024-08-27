@@ -662,6 +662,9 @@ require('lazy').setup({
               symbolScope = 'workspace',
             },
           },
+          init_options = {
+            buildFlags = { '-tags=alamo' },
+          },
         },
         pyright = {},
         rust_analyzer = {},
