@@ -30,6 +30,19 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
+  if vim.fn.has 'macunix' == 0 then
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+        ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste '+',
+        ['*'] = require('vim.ui.clipboard.osc52').paste '*',
+      },
+    }
+  end
 end)
 
 -- Enable break indent
@@ -185,8 +198,8 @@ require('lazy').setup({
           end
 
           -- Navigation
-          map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
-          map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
+          map('n', ']g', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+          map('n', '[g', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
 
           -- Actions
           map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>')
@@ -417,7 +430,7 @@ require('lazy').setup({
           telescope = true,
         },
       }
-      vim.keymap.set({ 'n', 'v' }, '<leader>gs', '<Cmd>Neogit<CR>', { desc = 'show git status' })
+      vim.keymap.set({ 'n', 'v' }, '<leader>gg', '<Cmd>Neogit<CR>', { desc = 'show git status' })
     end,
   },
 
