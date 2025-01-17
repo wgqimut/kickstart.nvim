@@ -79,6 +79,8 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.tabstop = 4
+vim.opt.expandtab = true -- disable tab, always use space
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -704,6 +706,7 @@ require('lazy').setup({
         },
         pyright = {},
         rust_analyzer = {},
+        bashls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
