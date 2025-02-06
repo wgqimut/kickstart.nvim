@@ -704,7 +704,6 @@ require('lazy').setup({
             buildFlags = { '-tags=alamo' },
           },
         },
-        pyright = {},
         rust_analyzer = {},
         bashls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
