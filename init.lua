@@ -819,7 +819,7 @@ require('lazy').setup({
         require('copilot').setup {
           suggestion = { enabled = false },
           panel = { enabled = false },
-          copilot_node_command = vim.fn.expand '~' .. '/.nvm/versions/node/v20.17.0/bin/node',
+          copilot_node_command = vim.fn.expand '~' .. '/.nvm/versions/node/v22.13.1/bin/node',
         }
       end,
     },
