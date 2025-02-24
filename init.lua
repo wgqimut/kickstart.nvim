@@ -24,6 +24,10 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+vim.o.foldlevelstart = 99
+vim.o.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -91,7 +95,7 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions = 'blank,buffers,curdir,help,tabpages,winsize,winpos,terminal,localoptions'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -437,6 +441,7 @@ require('lazy').setup({
     keys = {
       vim.keymap.set('n', '<leader>gb', '<Cmd>.DiffviewFileHistory --follow<CR>', { desc = 'File history for the current line' }),
       vim.keymap.set('v', '<leader>gb', "<Esc><Cmd>'<,'>DiffviewFileHistory --follow<CR>", { desc = 'File history for the visual selection' }),
+      vim.keymap.set({ 'n', 'v' }, '<leader>gf', '<cmd>DiffviewFileHistory %<cr>', { desc = 'File history for current file' }),
     },
   },
   {
@@ -671,6 +676,7 @@ require('lazy').setup({
         },
         rust_analyzer = {},
         bashls = {},
+        pylyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
